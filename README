@@ -6,7 +6,7 @@ make sure that you already compiles your assignment to binary file : "memsim"
 
 open terminal , change dir to assignment folder with cd command
 
-type following command :
+type two following commands:
 chmod 777 check
 ./check
 
