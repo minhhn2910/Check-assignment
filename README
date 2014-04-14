@@ -1,0 +1,19 @@
+choose your system : ubuntu 32bit or cygwin
+
+copy two files : "memsim1" and "check" to your assignment folder
+
+make sure that you already compiles your assignment to binary file : "memsim"
+
+open terminal , change dir to assignment folder with cd command
+
+type following command :
+chmod 777 check
+./check
+
+
+
+
+
+
+enjoy !
+

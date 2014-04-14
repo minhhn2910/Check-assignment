@@ -1,0 +1,102 @@
+#!/bin/bash
+# made by minh@mt09kttn
+echo "How many times do you want to check ^^ ?"
+read num
+	chmod 777 memsim
+	chmod 777 memsim1
+	echo "system conf = ? "
+	read conf
+	echo "$conf" > sys.conf
+	echo "please wait..."
+	for((k=0;k<num;k++))
+	do
+		rm input.txt
+		touch input.txt
+		RANGE=10
+		percent=2
+		process=$RANDOM
+		line=$RANDOM
+		fiindex=0
+		finish=( -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 )
+		let "line %= 10"
+		let "process %= 10"
+		let "process += 1"
+		currentproc=-1
+			address=$RANDOM
+			let "address %= 64"
+			proctem=1
+			let "proctem += $address"
+			let "currentproc += 1"
+			echo "START $currentproc $proctem" >> input.txt	
+		for ((i=0;i<$line;i++))
+		do
+			command=$RANDOM
+			address=$RANDOM
+			let "address %= 64"
+			let "command %= 3"
+			if [[ $command == 0 ]] && [[ $currentproc < $process ]]
+				then
+					proctem=1
+					let "proctem += $address"
+					let "currentproc += 1"
+					echo "START $currentproc $proctem" >> input.txt
+			fi
+
+			if [[ $command == 1 ]] && [[ $currentproc != -1 ]]
+				then
+				checkfordup=0
+				accessproc=$RANDOM
+				currenttemp=1
+				let "currenttemp += $currentproc"
+				let "accessproc %= $currenttemp"
+				for((j=1;j<=$fiindex;j++))
+				do
+					if [ $accessproc == ${finish[$j]} ]
+					then
+						let "checkfordup += 1"
+					fi			
+				done
+				if [ $checkfordup == 0 ] 
+				then				
+					echo "ACCESS $accessproc $address" >>input.txt
+				fi
+			fi
+			if [[ $command == 2 ]] && [[ $currentproc != -1 ]]
+				then
+					checkfordupfi=0
+					finishproc=$RANDOM
+					currenttemp1=1
+					let "currenttemp1 += $currentproc"
+					let "finishproc %= $currenttemp1"
+					for((l=1;l<=$fiindex;l++))
+					do
+						if [ $finishproc == ${finish[$l]} ]
+						then
+							let "checkfordupfi += 1"
+						fi			
+					done
+					if [ $checkfordupfi == 0 ] 
+					then				
+						let "fiindex += 1"
+						finish[$fiindex]=$finishproc
+						echo "FINISH $finishproc 0" >>input.txt	
+					fi
+			fi
+					
+						
+		done
+		a=$(./memsim)
+		b=$(./memsim1 -o output1.txt)
+		s=$(diff -s output.txt output1.txt)
+		if [ "$s" != "Files output.txt and output1.txt are identical" ]
+			then
+			echo "$s" > log.txt
+			echo "------"
+			echo "two output are different !!"
+			echo "open intput.txt to see input"
+			echo "open output.txt (your output) and output1.txt (my output) to compare"
+			echo "------"
+			exit 0
+		fi
+	done
+	echo "all match !!"
